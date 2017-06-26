@@ -66,9 +66,9 @@ class Shippify extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
 		$shippingPrice = $this->getConfigData('price');
 		$method = $this->_rateMethodFactory->create();
 		$method->setCarrier($this->_code);
-		$method->setCarrierTitle($this->getConfigData('title'));
+		$method->setCarrierTitle('Shippify');
 		$method->setMethod($this->_code);
-		$method->setMethodTitle($this->getConfigData('name'));
+		$method->setMethodTitle('Ship2');
 		$method->setPrice($shippingPrice);
 		$method->setCost($shippingPrice);
 		$result->append($method);
@@ -76,6 +76,9 @@ class Shippify extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
 
         return $result;
     }
+ }
+
+    
 
     /**
      * @return array
