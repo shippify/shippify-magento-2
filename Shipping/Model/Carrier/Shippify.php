@@ -76,16 +76,19 @@ class Shippify extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
 
         return $result;
     }
- }
-
-    
 
     /**
+     * Get allowed shipping methods
+     *
      * @return array
+     * @api
      */
     public function getAllowedMethods()
     {
-		
         return [$this->_code=> $this->getConfigData('name')];
     }
 }
+
+    
+
+
