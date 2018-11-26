@@ -1,5 +1,5 @@
- <?php
-      namespace ShippifyMagento\Controller\Adminhtml\Shippify;
+<?php
+namespace ShippifyMagento\Controller\Adminhtml\Shippify;
 
       class Index extends \Magento\Backend\App\Action
       {
@@ -32,5 +32,5 @@
              return  $resultPage = $this->resultPageFactory->create();
         }
       }
-    ?>
+?>
   
