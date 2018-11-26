@@ -1,0 +1,23 @@
+{
+  "name": "shippify/ShippifyMagento",
+  "description": "Shippify Magento Module",
+  "type": "magento2-module",
+  "version":"1.0.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Luis Loaiza",
+      "email": "luis@shippify.co"
+    }
+  ],
+  "support": {
+    "email": "developers@shippify.co"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "shippify-magento-2\\": ""
+    }
+  }
+}

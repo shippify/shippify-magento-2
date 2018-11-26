@@ -1,0 +1,8 @@
+    <?xml version="1.0"?>
+    <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+        <menu>
+          <add id="Shippify::greetings" title="Shippify" translate="title" module="ShippifyMagento" parent="Magento_Backend::content" sortOrder="50" dependsOnModule="ShippifyMagento" resource="Shippify::greetings"/>
+          <add id="Shippify::greetings_helloworld" title="Panel" translate="title" module="ShippifyMagento" parent="Shippify::greetings" sortOrder="10" dependsOnModule="ShippifyMagento" action="ShippifyMagento/shippify" resource="Shippify::greetings"/>
+        </menu>
+    </config>
+  
