@@ -7,7 +7,7 @@
         </head>
         <body>
             <referenceContainer name="content">
-                <block class="Magento\Backend\Block\Template" template="Shippify::helloworld.phtml"/>
+                <block class="Magento\Backend\Block\Template" template="Shippify_ShippifyMagento::helloworld.phtml"/>
             </referenceContainer>
         </body>
     </page>
