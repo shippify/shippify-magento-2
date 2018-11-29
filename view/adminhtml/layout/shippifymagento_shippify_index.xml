@@ -6,6 +6,7 @@
             </title>
         </head>
         <body>
+        <p>This is external content</p>
             <referenceContainer name="content">
                 <block class="Magento\Backend\Block\Template" template="Shippify_ShippifyMagento::helloworld.phtml"/>
             </referenceContainer>

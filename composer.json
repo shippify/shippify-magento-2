@@ -1,5 +1,5 @@
 {
-  "name": "shippify/ShippifyMagento",
+  "name": "Shippify/ShippifyMagento",
   "description": "Shippify Magento Module",
   "type": "magento2-module",
   "version":"1.0.0",
@@ -17,7 +17,7 @@
   "autoload": {
     "files": [ "registration.php" ],
     "psr-4": {
-      "shippify-magento-2\\": ""
+      "Shippify\\ShippifyMagento\\": ""
     }
   }
 }
