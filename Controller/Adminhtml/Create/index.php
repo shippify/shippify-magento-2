@@ -1,86 +1,112 @@
 <?php
 namespace Shippify\ShippifyMagento\Controller\Adminhtml\Create;
-use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
-use Magento\Backend\App\Action;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollectionFactory;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as SalesCollectionFactory;
-use Shippify\ShippifyMagento\Helper\Data as Helper;
-class Create extends Action
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Magento\Sales\Api\OrderManagementInterface;
+use Shippify\ShippifyMagento\Helper\Data;
+
+
+class Index extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAction
 {
     /**
-     * @var Filter
+     * @var OrderManagementInterface
      */
-    protected $filter;
-    /**
-     * @var salesCollectionFactory
-     */
-    protected $salesCollectionFactory;
-    
-    /**
-     * @var CustomerCollectionFactory
-     */
-    protected $customerCollectionFactory;
-    
-    /**
-     * @var Helper
-     */
-    protected $helper;
+    protected $orderManagement;
+
+    protected $helperData;
+
     /**
      * @param Context $context
      * @param Filter $filter
-     * @param Helper $helper
-     * @param CustomerCollectionFactory $customerCollectionFactory
-     * @param SalesCollectionFactory $salesCollectionFactory
+     * @param CollectionFactory $collectionFactory
+     * @param OrderManagementInterface $orderManagement
      */
+
     public function __construct(
         Context $context,
         Filter $filter,
-        Helper $helper,
-        CustomerCollectionFactory $customerCollectionFactory,
-        SalesCollectionFactory $salesCollectionFactory
+        CollectionFactory $collectionFactory,
+        OrderManagementInterface $orderManagement,
+        Data $helperData
     ) {
-        $this->filter = $filter;
-        $this->helper = $helper;
-        $this->customerCollectionFactory = $customerCollectionFactory;
-        $this->salesCollectionFactory = $salesCollectionFactory;
-        parent::__construct($context);
+        parent::__construct($context, $filter);
+        $this->collectionFactory = $collectionFactory;
+        $this->orderManagement = $orderManagement;
+        $this->helperData = $helperData;
     }
-    /**
-     * Execute action
+   /**
+     * Hold selected orders
      *
+     * @param AbstractCollection $collection
      * @return \Magento\Backend\Model\View\Result\Redirect
-     * @throws \Magento\Framework\Exception\LocalizedException|\Exception
      */
-    public function execute()
+    protected function massAction(AbstractCollection $collection)
     {
-        // $namespace = $this->getRequest()->getParam('namespace');
+        $logger = \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface');
+        $countCreateOrder = 0;
+        $model = $this->_objectManager->create('Magento\Sales\Model\Order');
+        $orders = array();
+        foreach ($collection->getItems() as $order) {
+            if (!$order->getEntityId()) {
+                continue;
+            }
+            $loadedOrder = $model->load($order->getEntityId());
+            array_push($orders, $order->getEntityId());
+            $countCreateOrder++;
+        }
+        $countNonCreateOrder = $collection->count() - $countCreateOrder;
+
         
-        // if ($namespace == 'customer_listing') {
-        //     $collection = $this->filter->getCollection($this->customerCollectionFactory->create());
-        // } else {
-        //     $collection = $this->filter->getCollection($this->salesCollectionFactory->create());
-        // }
-        // $emailSent = 0;
-        // foreach ($collection as $item) {
-        //     try {
-        //         $this->helper->send($item);
-        //         $emailSent++;
-        //     } catch (LocalizedException $e) {
-        //         $this->messageManager->addErrorMessage($e->getMessage());
-        //         break;
-        //     } catch (\Exception $e) {
-        //         $this->messageManager->addExceptionMessage($e, __('Some emails were not sent.'));
-        //         break;
-        //     }
-        // }
-        // if ($emailSent) {
-        //     $this->messageManager->addSuccessMessage(__('A total of %1 email(s) have been sent.', $emailSent));
-        // }
-        // /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        return $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+
+        if ($countNonCreateOrder && $countCreateOrder) {
+            $this->messageManager->addError(__('%1 order(s) were not created in Shippify.', $countNonCreateOrder));
+        } elseif ($countNonCreateOrder) {
+            $this->messageManager->addError(__('No order(s) were created.'));
+        }
+
+
+        //echo $this->helperData->getGeneralConfig('enable');
+       // echo $this->helperData->getGeneralConfig('api_id');
+        //echo $this->helperData->getGeneralConfig('api_token');
+
+
+        if ($countCreateOrder) {
+
+
+            $url = 'https://aa7c9efc.ngrok.io/v1/magento/create/deliveries';
+
+            $ch = curl_init( $url );
+            
+            $username = $this->helperData->getGeneralConfig('api_id');
+            $password = $this->helperData->getGeneralConfig('api_token');
+
+            $orders_separated = implode(",", $orders);
+
+            $payload = json_encode( array( "orders"=> $orders_separated ) );
+
+            $logger->debug('ORDERS');
+            $logger->debug((String)$orders_separated);
+
+            curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password); 
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+            curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+            // # Return response instead of printing.
+            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+            // # Send request.
+            $result = curl_exec($ch);
+            curl_close($ch);
+            // # Print response.
+            $logger->debug('RESULT:');
+            $logger->debug((String)$result);
+
+            $this->messageManager->addSuccess(__('You have created %1 delivery(s) in Shippify.', $countCreateOrder));
+        }
+        
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('shippifymagento/orders/index');
+        return $resultRedirect;
     }
 }
