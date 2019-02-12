@@ -1,0 +1,33 @@
+{
+  "name": "Shippify/shippify-module",
+  "description": "Shippify Magento Module",
+  "type": "magento2-module",
+  "version":"1.0.0",
+  "authors": [
+    {
+      "name": "Luis Loaiza",
+      "email": "luis@shippify.co"
+    },
+    {
+      "name": "Leonardo Larrea",
+      "email": "leonardo@shippify.co"
+    }
+  ],
+  "license": [
+    "OSL-3.0",
+    "AFL-3.0"
+  ],
+  "require": {
+    "php": "~5.6.0|7.0.2|7.0.4|~7.0.6"
+  },
+  "support": {
+    "email": "developers@shippify.co"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "Shippify\\ShippifyMagento\\": ""
+    }
+  }
+}

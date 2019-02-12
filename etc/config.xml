@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <credentials>
+            <general>
+                <enable>1</enable>
+                <api_id></api_id>
+                <api_token></api_token>
+            </general>
+        </credentials>
+        <carriers>
+            <shippifyflex>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Shippify\ShippifyMagento\Model\Carrier\Shippify</model>
+                <name>Shippify Flex</name>
+                <price>1</price>
+                <title>Shippify Flex Method</title>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+            </shippifyflex>
+        </carriers>
+    </default>
+</config>
