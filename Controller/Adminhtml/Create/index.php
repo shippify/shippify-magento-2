@@ -75,7 +75,7 @@ class Index extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAction
         if ($countCreateOrder) {
 
 
-            $url = 'https://aa7c9efc.ngrok.io/v1/magento/create/deliveries';
+            $url = 'https://api.shippify.co/v1/magento/create/deliveries';
 
             $ch = curl_init( $url );
             

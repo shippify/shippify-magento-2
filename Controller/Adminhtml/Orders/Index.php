@@ -34,7 +34,7 @@ use Magento\Backend\App\Action;
         public function execute()
         { 
                $resultPage = $this->resultPageFactory->create();
-               $resultPage->getConfig()->getTitle()->prepend(__('Shippify Orders'));
+               $resultPage->getConfig()->getTitle()->prepend(__('Shippify Dash'));
                
              return  $resultPage;
         }
