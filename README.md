@@ -6,12 +6,23 @@ To test this module please clone the Magento environment in `https://github.com/
 
 # Installing Magento Shippify Module
 
+- By Marketplace(Waiting for approval) 
+- By Zip Module (Release section)
+
+# How to Install Magento 2 Extension
+  Step 1: Upload the extension to your Magento Server.
+  Step 2: Enter the following at the command line
+     1 `bin/magento module:status` - This command shows a list of enabled/disabled modules.
+     2 `bin/magento module:enable Shippify_ShippifyMagento` - Run this to enable the module.
+     3 `bin/magento setup:upgrade` - This command will properly register the module with Magento.
+     4 `bin/magento setup:di:compile` - This command compiles classes used in dependency injections.
+
 ## Development mode
 
 Using the dockerized environment run the following comands to install:
 
 1 `bin/magento module:status` - This command shows a list of enabled/disabled modules.
-2 `bin/magento module:enable ShippifyMagento` - Run this to enable the module.
+2 `bin/magento module:enable Shippify_ShippifyMagento` - Run this to enable the module.
 3 `bin/magento setup:upgrade` - This command will properly register the module with Magento.
 4 `bin/magento setup:di:compile` - This command compiles classes used in dependency injections.
 
